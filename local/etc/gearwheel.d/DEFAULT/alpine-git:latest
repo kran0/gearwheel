@@ -1,0 +1,17 @@
+#!/bin/sh
+
+DOCKER_EXE="/usr/bin/env --ignore-environment docker\
+ run\
+  --rm\
+  --volume $PWD:$PWD:z\
+  --workdir $PWD\
+  --user $(id -u):$(id -g)"
+IMAGE='alpine/git:latest'
+
+[ "$DIND_LINK" = "" ] && exec $DOCKER_EXE $BASE_DOCKER_SOCK\
+ $IMAGE $*
+
+exec $DOCKER_EXE $DIND_LINK\
+  $IMAGE $*
+
+
