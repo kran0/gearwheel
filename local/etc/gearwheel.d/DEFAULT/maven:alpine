@@ -14,5 +14,3 @@ IMAGE='maven:alpine'
 
 exec $DOCKER_EXE $DIND_LINK\
   $IMAGE $*
-
-

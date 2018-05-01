@@ -14,5 +14,3 @@ IMAGE='alpine/git:latest'
 
 exec $DOCKER_EXE $DIND_LINK\
   $IMAGE $*
-
-

@@ -16,5 +16,3 @@ IMAGE='busybox:latest'
 
 exec $DOCKER_EXE $DIND_LINK\
   $IMAGE $(echo "$0 " | sed -e 's/^.*\///') $*
-
-

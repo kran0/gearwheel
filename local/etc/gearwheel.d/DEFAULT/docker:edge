@@ -14,5 +14,3 @@ IMAGE='docker:edge'
 
 exec $DOCKER_EXE $DIND_LINK\
   $IMAGE $*
-
-

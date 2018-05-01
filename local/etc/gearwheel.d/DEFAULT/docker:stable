@@ -14,5 +14,3 @@ IMAGE='docker:stable'
 
 exec $DOCKER_EXE $DIND_LINK\
   $IMAGE $*
-
-

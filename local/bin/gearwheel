@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # $0 is a wrapper. It does:
-#	1) Selects the profile bin directories and changes PATH variable to use them: to add custom utils support;
-#	2) Adds masic 'services' support: start, stop, status;
-#	2) Traps the signals received by the shell and cleans up environment if needed: auto stop all running 'services';
+#1) Selects the profile bin directories and changes PATH variable: to add custom utils support;
+#2) Adds basic 'services' support: start, stop, status;
+#3) Traps the signals received by the shell and cleans up environment if needed: auto stop running 'services';
 
 # set readonly env
 
@@ -99,7 +99,7 @@ function wheelctlstopall {
 # set various env
 
 TASK_WORKDIR="$PWD"
-readonly DIND_TARGET_DIR="$TASK_WORKDIR/docker-target" # IMAGES and VOLUMES will be saved here before dind exit
+readonly DIND_TARGET_DIR="$TASK_WORKDIR/docker-target" # IMAGES and VOLUMES will be saved here before dind autoexit
                                                        # Auto-save wont run if dind service stoped with 'wheelctl stop dind'
 
 # check the env input profiles exists
@@ -112,7 +112,7 @@ done
 # if no input, then use DEFAULT
 if [ -z "$wheels" ]
 then
- write_message warn "GEARWHEEL_WHEELS is not set or contains wrong wheels set." "Using default wheels=$DEFAULT_WHEEL" 1>&2
+ write_message warn "GEARWHEEL_WHEELS is not set or contains wrong wheels set." "Using default wheels=$DEFAULT_WHEEL"
  wheels="$DEFAULT_WHEEL"
 fi
 
@@ -142,6 +142,6 @@ write_message "$0 init ok"
 
 readonly TASK_START_TIME="$(date +%s)"
 (
- . $1
+ . $1 # run wrapped script using this wrapper's shebang
 )
 write_message "TASK runtime: $(seconds_convert $(($(date +%s)-$TASK_START_TIME)))"

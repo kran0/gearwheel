@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # this is a little helper
-# it creates new wheel: a gearwheel.d subdirectory with simlinks on the Default profile.
-# You can run this script, rename target directory and delete unneeded rename needed symlinks
+# it creates new wheel: a gearwheel.d subdirectory with simlinks to the Default profile.
+# You can run this script, rename target directory and delete-unneeded rename-needed symlinks.
 
 DEF_PROFILE="$PWD/DEFAULT"
 NEW_PROFILE="wheel-$(date +%s)"
