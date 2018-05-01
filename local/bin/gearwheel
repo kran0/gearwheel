@@ -101,6 +101,7 @@ function wheelctlstopall {
 TASK_WORKDIR="$PWD"
 readonly DIND_TARGET_DIR="$TASK_WORKDIR/docker-target" # IMAGES and VOLUMES will be saved here before dind autoexit
                                                        # Auto-save wont run if dind service stoped with 'wheelctl stop dind'
+mkdir -p "$DIND_TARGET_DIR" || exit 1
 
 # check the env input profiles exists
 unset wheels # going to increment it
@@ -143,5 +144,5 @@ write_message "$0 init ok"
 readonly TASK_START_TIME="$(date +%s)"
 (
  . $1 # run wrapped script using this wrapper's shebang
-)
+) | tee "$DIND_TARGET_DIR/build.log"
 write_message "TASK runtime: $(seconds_convert $(($(date +%s)-$TASK_START_TIME)))"
