@@ -74,7 +74,7 @@ function wheelctlstopall {
    docker save $image -o "$TARGET/$image"
   done												# 1
 
-  volumes="$(docker volume ls --format '{{.Name}}')"
+  echo volumes="$(docker volume ls --format '{{.Name}}')"
   if [ ! -z "$volumes" ]
   then
    write_message "dind-service trottling down: docker save volumes: \"$volumes\" to \"$TARGET/volumes-$GEARWHEEL_TASKID.tar\""

@@ -23,6 +23,7 @@ popd #docker-compose-java
 # Example random project: using dockerised git ad docker. Building in dind
 git clone https://github.com/twogg-git/docker-nginx.git
 pushd docker-nginx
+docker build -t nginx:site .
 
 popd #docker-nginx
 
