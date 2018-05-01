@@ -72,19 +72,23 @@ popd
 ### Full instructions
 
 - First you need a project with complete build script like: unzip, change directory, perform build steps;
-- Create or select profiles usefull for your build job and set it in GEARWHEEL_WHEELS variable.
-  - Profile may contain one or more space separated names from local/etc/gearwheel.d/*. If there are duplicated utils, first profile will be used first;
-  - If you wahnt to create nwe profile, use local/etc/gearwheel.d/multigear.sh. It will create new profile from the DEFAULT one;
+- Create or select 'wheels' (profiles) usefull for your build job and set it in GEARWHEEL_WHEELS variable;
+  - GEARWHEEL_WHEELS variable may contain one or more space separated profile names from local/etc/gearwheel.d/*. If there are duplicated tools inside them, first wheel (profile) will be used first;
+  - If you wahnt to create new wheel (profile), use local/etc/gearwheel.d/multigear.sh. It will create new wheel from the DEFAULT one.
 - Name your build job and set the name in GEARWHEEL_TASKID variable;
-- Using build-example-project.sh add your build script in build-*.sh. Your build jobs should be between two horizontal lines.
-  - Actually, you can build anywhere, but for first time better place your jib between the lines;
-- Run build-*.sh with at least GEARWHEEL_WHEELS and GEARWHEEL_TASKID variables set.
-  - you can use Jenkins_example-project to prepare a starter script for your project. It sets variables and runs build-*.sh.
+  - You dont have to do it, GEARWHEEL_TASKID will be autosed to some ugly string if not set.
+- Using build-example-project.sh add your build script in build-*.sh. Your build jobs should be between two horizontal lines;
+  - Actually, you can build anywhere, but for first time better place your jib between the lines.
+- Run build-*.sh with GEARWHEEL_WHEELS and GEARWHEEL_TASKID variables set;
+  - If GEARWHEEL_WHEELS is not set, then DEFAULT whell is used;
+  - If GEARWHEEL_TASKID is not set, them GEARWHEEL_TASKID is generated;
+  - You can use Jenkins_example-project to prepare a starter script for your project. It sets variables and runs build-*.sh;
+  - If you running script as part of CI/CD pipeline, make sure env variables are set.
 
 * You can use it on desktop:
   - use something like Jenkins_example-project script as starter script;
 * You can use it on a build server:
-  - use Jenkins_example-project to find out what variables to set while executing build-*.sh build task from build server's pipeline;
+  - use Jenkins_example-project to find out what variables to set for executing build-*.sh from build server's pipeline;
 * You can use it other way.
 
 ## Todo
