@@ -8,14 +8,17 @@ Gearwheels is currnetly a wrapper written in shell (sh).
 
 ## What Gearwheels does? And why?
 
-* Transparent substitution of commands like 'docker' 'docker-compose' 'mvn' and such with their dockerised versions;
-  * This is usefull when incompatible tools runs on the same host;
-* Add 'services' like dind and use them seamless with dockerized tools;
-  * Build isolation;
-  * Build in modern dind while host's dockerd is 1.12+;
+* Transparent substitution of commands like 'docker' 'docker-compose' 'mvn' and such (potentially any command or program) with their dockerised versions;
+  * Usefull if the tool is ugly and dirty and you just wahnt not to install in on the host;
+  * Usefull when incompatible tools rejects to run on the same host;
+  * Usefull to get new and even edge versions of tools on industrial distributives.
+* Run in docker 'services' like dind and use them seamless with dockerized tools;
+  * Same as above including build in modern dind while host's dockerd is 1.12+;
+  * + Per build service isolation.
 * Export docker images and docker volumes standart way.
+  * After build finishes, the service will automatic export its artifacts.
 
-With gearwheels you can use build machine with with only software config:
+You can use CI/CD machine with with only:
 - Coreutils;
 - Docker v1.12+;
 - Gearwheel.
@@ -25,16 +28,46 @@ No other tools needed, you can even use coreutils from busybox:latest.
 
 ### Quick start
 
-You can check the work by just run example build. E.g.: Just run $ ./Jenkins_example-project
+You can check it works by just run example build. E.g.: Just run $ ./Jenkins_example-project
 
 No, you dont need Jenkins, thats just the name of start script.
 Jenkins_example-project just 'emulates' build server's work:
 - sets some environment;
-- changes the working directory;
-- starts the build: $ script build-example-project.sh.
+- changes working directory;
+- starts the build: $ ./build-example-project.sh.
 
-The build script build-example-project.sh contains several example build tasks.
-You will get example docker artifacts in workdir/docker-target.
+Build script ./build-example-project.sh contains several example build tasks.
+After test build finishes, you will get example docker artifacts in ./workdir/docker-target/.
+
+### Slow start
+
+* EXAMPLE #1
+Let's say you are to build docker image from Dockerfile.
+You just can replace conthent between two horisontal lines in ./build-example-project.sh with:
+```bash
+# -----------------------------------------------------------------------------
+
+pushd /directory/with/Dockerfile
+docker build -t targettag:latest .
+popd
+
+# -----------------------------------------------------------------------------
+```
+
+* EXAMPLE #2
+Let's say you are to build docker project with docker-compose.yaml.
+You just can replace conthent between two horisontal lines in ./build-example-project.sh with:
+```bash
+# -----------------------------------------------------------------------------
+
+pushd /directory/with/docker-compose.yaml
+docker-compose build
+docker-compose up -d
+docker-compose down
+popd
+
+# -----------------------------------------------------------------------------
+```
 
 ### Full instructions
 
