@@ -7,12 +7,14 @@ DOCKER_EXE="/usr/bin/env --ignore-environment docker\
   --volume $PWD:$PWD:z\
   --workdir $PWD\
   --user $(id -u):$(id -g)"
-IMAGE='docker:edge'
+IMAGE='busybox:latest'
+
+# symlink this file with any busybox utility name
 
 [ "$DIND_LINK" = "" ] && exec $DOCKER_EXE $BASE_DOCKER_SOCK\
- $IMAGE $*
+ $IMAGE $(echo "$0 " | sed -e 's/^.*\///') $*
 
 exec $DOCKER_EXE $DIND_LINK\
-  $IMAGE $*
+  $IMAGE $(echo "$0 " | sed -e 's/^.*\///') $*
 
 

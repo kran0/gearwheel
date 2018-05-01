@@ -3,6 +3,7 @@
 DOCKER_EXE="/usr/bin/env --ignore-environment docker\
  run\
   --rm\
+  --interactive\
   --volume $PWD:$PWD:z\
   --workdir $PWD\
   --user $(id -u):$(id -g)"

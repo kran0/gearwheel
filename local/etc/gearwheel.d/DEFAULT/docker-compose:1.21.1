@@ -2,6 +2,7 @@
 
 DOCKER_EXE="/usr/bin/env --ignore-environment docker run\
   --rm\
+  --interactive\
   --volume $PWD:$PWD:z\
   --workdir $PWD\
   --env DOCKER_HOST=docker:2375\
