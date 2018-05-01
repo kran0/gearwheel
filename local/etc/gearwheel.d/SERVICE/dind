@@ -1,0 +1,49 @@
+# this file will be run with /bin/sh
+# this file should not be executable
+
+(
+ SNAME='dind service'
+ IMAGE='docker:stable-dind'
+ CNAME="$TASK_ID-dind"
+ DOCKER_EXE='/usr/bin/env --ignore-environment docker'
+
+ for signal in $*
+ do
+  case "$signal" in
+   start)
+
+   $DOCKER_EXE run -d --privileged --name "$CNAME"\
+    -v $TASK_WORKDIR:$TASK_WORKDIR:z\
+    "$IMAGE"
+# :ro suits when no volumes needs write access #    -v $TASK_WORKDIR:$TASK_WORKDIR:ro\
+
+   ;;
+   stop)
+
+   $DOCKER_EXE stop "$CNAME" || $DOCKER_EXE kill "$CNAME"
+   $DOCKER_EXE rm "$CNAME"
+
+   ;;
+   status)
+
+    SERVICE_STATUS=none
+    MESSAGE="# DIND is not running
+unset DIND_USE DIND_LINK"
+
+    CID=$($DOCKER_EXE ps -q --filter name="$CNAME")
+    if [ ! -z "$CID" ]
+    then
+     SERVICE_STATUS='running'
+     MESSAGE=$($DOCKER_EXE ps --filter name="$CNAME" | sed -e 's/^/# /')
+     MESSAGE="$MESSAGE
+export DIND_USE=yes
+export DIND_LINK=\"--link $CNAME:docker\""
+    fi
+
+    echo "# $SNAME status is: $SERVICE_STATUS
+$MESSAGE" >&3
+
+   ;;
+  esac
+ done
+) 3>&1 2>/dev/null 1>&2

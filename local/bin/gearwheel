@@ -1,0 +1,147 @@
+#!/bin/sh
+
+# $1 is a wrapper. It does:
+#	1) Selects the profile bin directories and changes PATH variable to use them: to add custom utils support;
+#	2) Adds masic 'services' support: start, stop, status;
+#	2) Traps the signals received by the shell and cleans up environment if needed: auto stop all running 'services';
+
+# set readonly env
+
+readonly GEARWHEEL_START_TIME="$(date +%s)"
+readonly SERVICE_WHEEL='SERVICE'
+readonly DEFAULT_WHEEL='DEFAULT'
+readonly TASK_SVC_TMP="$(mktemp --dry-run)"
+[ -z "$GEARWHEEL_HOME" ] && GEARWHEEL_HOME="$HOME/.local/etc/gearwheel.d"
+readonly GEARWHEEL_HOME; export GEARWHEEL_HOME
+
+if [ -z  "$GEARWHEEL_TASKID" ]
+then
+ input=($1); script=$(realpath $input)
+ readonly TASK_ID=${script//[^a-z]/}
+ write_message warn 'GEARWHEEL_TASKID is not set.' "Autoset variable TASK_ID=$TASK_ID"
+ unset input script
+else
+ readonly TASK_ID="$GEARWHEEL_TASKID"
+fi
+
+#set functions
+
+function seconds_convert {
+ if [ ${1} -gt 3599 ]
+ then
+  printf "%02dh %02dm %02ds" $((${1}/3600)) $((${1}%3600/60)) $((${1}%60))
+ else
+  printf "%02dm %02ds" $((${1}%3600/60)) $((${1}%60))
+ fi
+}
+
+function write_message {
+ (
+  case $1 in
+   warn ) echo "WARNING: $2"; shift 2;;
+   error) echo "ERROR: $2"; shift 2  ;;
+   fatal) echo "FATAL: $2"; shift 2  ;;
+   *    ) echo "INFO: $1"; shift 1   ;;
+  esac
+  [ -z "$1" ] || write_message "$*"
+ ) >&2
+}
+
+# wheelctl is service-control tool
+function wheelctl {
+ local svcctl="$GEARWHEEL_HOME/$SERVICE_WHEEL/$2"
+ [ -z "$2" ] || [ -f "$svcctl" ] && case $1 in
+  start   ) . "$svcctl" stop start status;;
+  stop    ) . "$svcctl" stop status;;
+  restart ) . "$svcctl" stop start status;;
+  status  ) . "$svcctl" status $*;;
+  *       ) echo 'USAGE: wheelctl [ start | stop | restart | status ] serviceName'
+ esac
+}
+
+# stop all services
+function wheelctlstopall {
+ write_message "services trottling down"
+
+ . $TASK_SVC_TMP
+
+ [ ! "$DIND_LINK" = "" ] && [ ! -z "$DIND_TARGET_DIR" ] && (
+  TARGET=$(realpath "$DIND_TARGET_DIR")
+  mkdir -p "$TARGET"
+  for image in $(docker images --format "{{.Repository}}:{{.Tag}}")
+  do
+   write_message "dind-service trottling down: \$ docker save $image -o \"$TARGET/$image\""
+   docker save $image -o "$TARGET/$image"
+  done												# 1
+
+  volumes="$(docker volume ls --format '{{.Name}}')"
+  if [ ! -z "$volumes" ]
+  then
+   write_message "dind-service trottling down: docker save volumes: \"$volumes\" to \"$TARGET/volumes-$GEARWHEEL_TASKID.tar\""
+   docker run --rm $(for volume in $volumes
+                     do echo " --volume $volume:/volumes/$volume:ro"
+                     done) --volume "$TARGET":/target:z\
+    busybox tar cf "./target/volumes-$GEARWHEEL_TASKID.tar" -C "/volumes/" .
+  fi												# 2
+ )
+
+ for service in $GEARWHEEL_HOME/$SERVICE_WHEEL/*
+ do
+  write_message "$service stop"
+  . $service stop
+ done 												# 3
+
+ write_message "final cleanup"
+ rm -f $TASK_SVC_TMP 										# 4
+ write_message "GEARWHEEL runtime: $(seconds_convert $(($(date +%s)-$GEARWHEEL_START_TIME)))"
+}
+
+# set various env
+
+TASK_WORKDIR="$PWD"
+readonly DIND_TARGET_DIR="$TASK_WORKDIR/docker-target" # IMAGES and VOLUMES will be saved here before dind exit
+                                                       # Auto-save wont run if dind service stoped with 'wheelctl stop dind'
+
+# check the env input profiles exists
+unset wheels # going to increment it
+for input in $GEARWHEEL_WHEELS
+do
+ [ -d "$GEARWHEEL_HOME/$input" ] && wheels="$wheels $input"
+done
+
+# if no input, then use DEFAULT
+if [ -z "$wheels" ]
+then
+ write_message warn "GEARWHEEL_WHEELS is not set or contains wrong wheels set." "Using default wheels=$DEFAULT_WHEEL" 1>&2
+ wheels="$DEFAULT_WHEEL"
+fi
+
+# set ptah
+export PATH="$(printf $GEARWHEEL_HOME'/%s:' $wheels)$PATH"
+#export PATH=$(
+#    for wheel in $wheels
+#     do
+#      echo -n $GEARWHEEL_HOME/$wheel:
+#     done
+#    echo $PATH
+#    )
+
+# set base docker sock
+if [ -z $DOCKER_HOST ]
+then
+ BASE_DOCKER_SOCK='--volume /var/run/docker.sock:/var/run/docker.sock'
+else
+ BASE_DOCKER_SOCK='--env DOCKER_HOST=$DOCKER_HOST'
+fi
+export BASE_DOCKER_SOCK
+
+# catch interrupts to call function on exit
+trap wheelctlstopall EXIT
+
+write_message "$0 init ok"
+
+readonly TASK_START_TIME="$(date +%s)"
+(
+ . $1
+)
+write_message "TASK runtime: $(seconds_convert $(($(date +%s)-$TASK_START_TIME)))"

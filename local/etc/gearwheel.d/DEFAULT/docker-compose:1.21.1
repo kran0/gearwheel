@@ -1,0 +1,22 @@
+#!/bin/sh
+
+DOCKER_EXE="/usr/bin/env --ignore-environment docker run\
+  --rm\
+  --volume $PWD:$PWD:z\
+  --workdir $PWD\
+  --env DOCKER_HOST=docker:2375\
+  --env COMPOSE_HTTP_TIMEOUT=300\
+  --user $(id -u):$(id -g)"
+IMAGE='docker/compose:1.21.1'
+
+# we need COMPOSE_HTTP_TIMEOUT because sometimes compose delays yo up service:
+#	1) If it invokes build before up (up --build or service is not build while performing up);
+#	2) If up contains heavy command, which takes time to heat up and run.
+
+[ "$DIND_LINK" = "" ] && exec $DOCKER_EXE $BASE_DOCKER_SOCK\
+ $IMAGE $*
+
+exec $DOCKER_EXE $DIND_LINK\
+  $IMAGE $*
+
+

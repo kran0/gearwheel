@@ -1,0 +1,15 @@
+#!/bin/sh
+
+export GEARWHEEL_WHEELS="wheel-example"
+
+# Set the TASK_ID. Use lowercase. No spaces, special charaters and such, please!
+export GEARWHEEL_TASKID="example-project"
+
+#disable this two in prod
+PATH=$PWD/local/bin:$PATH
+export GEARWHEEL_HOME="$PWD/local/etc/gearwheel.d"
+
+#disable this in prod
+mkdir -p workdir; cd workdir
+
+../build-example-project.sh
