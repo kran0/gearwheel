@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# $1 is a wrapper. It does:
+# $0 is a wrapper. It does:
 #	1) Selects the profile bin directories and changes PATH variable to use them: to add custom utils support;
 #	2) Adds masic 'services' support: start, stop, status;
 #	2) Traps the signals received by the shell and cleans up environment if needed: auto stop all running 'services';

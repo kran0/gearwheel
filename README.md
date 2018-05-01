@@ -1,6 +1,6 @@
-# gearwheel
+# Gearwheel or Gearwheels
 
-Gearwheel is a toolset for building docker images
+Gearwheel is a toolset used mostly for building docker images.
 
 ## What Gearwheel is?
 
@@ -14,6 +14,12 @@ Gearwheels is currnetly a wrapper written in shell (sh).
   * Build isolation;
   * Build in modern dind while host's dockerd is 1.12+;
 * Export docker images and docker volumes standart way.
+
+With gearwheels you can use build machine with with only software config:
+- Coreutils;
+- Docker v1.12+;
+- Gearwheel.
+No other tools needed, you can even use coreutils from busybox:latest.
 
 ## How to use Gearwheels?
 
