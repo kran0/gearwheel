@@ -8,20 +8,22 @@ Gearwheels is currnetly a wrapper written in shell (sh).
 
 ## What Gearwheels does? And why?
 
-* Transparent substitution of commands like `docker` `docker-compose` `mvn` and such (potentially any command or program) with their dockerised versions;
-  * Usefull if the tool is ugly and dirty and you just wahnt not to install in on the host;
+* Transparent substitution of commands like `docker` `docker-compose` `mvn` 
+and such (potentially any command or program) with their dockerised versions;
+  * Usefull if the tool is ugly and dirty and you just dont wahnt to install it on the host;
   * Usefull when incompatible tools rejects to run on the same host;
   * Usefull to get new and even edge versions of tools on industrial distributives.
 * Run tools using 'services' like dind and use them seamless with dockerized tools;
   * Same as above including build in modern dind while host's dockerd is 1.12+;
-  * + Per build service isolation.
+  * Per build service isolation.
 * Export docker images and docker volumes standart way.
   * After build finishes, the service will automatic export its artifacts.
 
-You can use CI/CD machine with with only:
+You can use CI/CD machine with only:
 - Coreutils;
 - Docker v1.12+;
 - Gearwheel.
+
 No other tools needed, you can even use coreutils from busybox:latest inside your build script.
 
 ## How to use Gearwheels?
@@ -30,13 +32,13 @@ No other tools needed, you can even use coreutils from busybox:latest inside you
 
 You can check it works by just run example build. E.g.: Just run `./Jenkins_example-project`
 
-No, you dont need Jenkins, thats just the name of start script.
-Jenkins_example-project just 'emulates' build server's work:
+No, you dont need Jenkins, that's just the name of start script.
+`./Jenkins_example-project` 'emulates' build server's work:
 - sets some environment;
 - changes working directory;
 - starts the build: `./build-example-project.sh`.
 
-Build script `./build-example-project.sh` contains several example build tasks.
+Build script `./build-example-project.sh` is written using shell (sh) and contains several example build tasks.
 After test build finishes, you will get example docker artifacts in `./workdir/docker-target/`.
 
 ### Slow start
