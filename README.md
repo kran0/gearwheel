@@ -1,11 +1,13 @@
-# Gearwheel or Gearwheels
+# Gearwheel
 
 Gearwheel is a tool set used mostly for building docker images.
 But it is more, than just a builder.
-- It makes use of 'dockerised' tool's (which runs inside dind: docker in docker)
+- It makes use of 'dockerised' tool's (which runs inside docker)
   as simple as using local installed tools.
-- And it makes run docker containers inside dind
+- And it makes run docker containers inside dind (docker in docker)
   as simple as running them just in host's docker.
+Yes it is simple, look inside the example file `./build-example-project.sh`
+You can write your OPS script like there is no docker around, but it is.
 
 ## What Gearwheel is?
 
