@@ -1,5 +1,4 @@
-<img height="50%" align="right" src="./gear_illustration.svg">
-# Gearwheel
+# Gearwheel <img height="50%" align="right" src="./gear_illustration.svg">
 
 Gearwheel is a tool set used mostly for building docker images.
 But it is more, than just a builder.
