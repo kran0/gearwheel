@@ -6,6 +6,7 @@ But it is more, than just a builder.
   as simple as using local installed tools.
 - And it makes run docker containers inside dind (docker in docker)
   as simple as running them just in host's docker.
+
 Yes it is simple, look inside the example file `./build-example-project.sh`
 You can write your OPS script like there is no docker around, but it is.
 
