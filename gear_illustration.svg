@@ -47,49 +47,14 @@
 
 <g class="gearlogos">
 
-<image xlink:href="https://maven.apache.org/images/maven-logo-black-on-white.png"
-       x="65"
-       y="-50"
-       height="50px" width="50px"/>
-
-<image xlink:href="https://git-scm.com/images/logos/downloads/Git-Logo-2Color.png"
-       x="-100"
-       y="-70"
-       height="50px" width="50px"/>
-
-<image xlink:href="https://busybox.net/images/busybox1.png"
-       x="-90"
-       y="-10"
-       height="50px" width="50px"/>
-
-<!-- gradle -->
-<image xlink:href="https://avatars3.githubusercontent.com/u/124156"
-       x="-67"
-       y="40"
-       height="50px" width="50px"/>
-
-<image xlink:href="https://www.docker.com/sites/default/files/vertical.png"
-       x="20"
-       y="-95"
-       height="50px" width="50px"/>
-
-<image xlink:href="https://github.com/kubernetes/kubernetes/blob/master/logo/logo.png?raw=true"
-       x="60"
-       y="30"
-       height="35px" width="35px"/>
-
-<!-- small logos -->
-
-<image xlink:href="https://jfrog.com/wp-content/uploads/2017/12/Jfrog.png"
-       x="3"
-       y="65"
-       height="35px" width="35px"/>
-
-<!-- yarnpkg -->
-<image xlink:href="https://avatars1.githubusercontent.com/u/22247014"
-       x="-38"
-       y="-105"
-       height="35px" width="35px"/>
+<text x="65"  y="-15" font-family="sans-serif" font-size="15px" fill="black">Maven</text>
+<text x="40"  y="50"  font-family="sans-serif" font-size="15px" fill="black">kubectl</text>
+<text x="5"   y="90"  font-family="sans-serif" font-size="15px" fill="black">Jfrog</text>
+<text x="-60" y="85"  font-family="sans-serif" font-size="15px" fill="black">git</text>
+<text x="-95" y="25"  font-family="sans-serif" font-size="15px" fill="black">Docker</text>
+<text x="-90" y="-40"  font-family="sans-serif" font-size="15px" fill="black">Java</text>
+<text x="-30" y="-80"  font-family="sans-serif" font-size="15px" fill="black">oc</text>
+<text x="30" y="-70"  font-family="sans-serif" font-size="15px" fill="black">npm</text>
 
 </g>
 
