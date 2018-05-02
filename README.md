@@ -11,7 +11,7 @@ But it is more, than just a builder.
 
 Gearwheel is currently a wrapper written in shell (sh).
 
-## What Gearwheels does? And why?
+## What Gearwheel does? And why?
 
 * Transparent substitution of commands
   like `docker` `docker-compose` `mvn` and such (potentially any program)
@@ -36,7 +36,7 @@ You can use CI/CD machine with only:
 No other tools needed,
 you can even use coreutils from busybox:latest inside your build script.
 
-## How to use Gearwheels?
+## How to use Gearwheel?
 
 ### Quick start
 
@@ -137,7 +137,7 @@ popd
   - If you running script as part of CI/CD pipeline,
     make sure env variables are set right.
 
-* You can use gearwheels on desktop:
+* You can use Gearwheel on desktop:
   - use something like `./Jenkins_example-project` script as starter script;
 * You can use it on a build server:
   - use `./Jenkins_example-project`
