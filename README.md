@@ -1,26 +1,31 @@
 # Gearwheel or Gearwheels
 
-Gearwheel is a toolset used mostly for building docker images.
+Gearwheel is a tool set used mostly for building docker images.
+But it is more, than just a builder.
+- It makes use of 'dockerised' tool's (which runs inside dind: docker in docker)
+  as simple as using local installed tools.
+- And it makes run docker containers inside dind
+  as simple as running them just in host's docker.
 
 ## What Gearwheel is?
 
-Gearwheels is currnetly a wrapper written in shell (sh).
+Gearwheel is currently a wrapper written in shell (sh).
 
 ## What Gearwheels does? And why?
 
 * Transparent substitution of commands
   like `docker` `docker-compose` `mvn` and such (potentially any program)
   with their dockerised versions;
-  * Usefull if the tool is ugly and dirty
-    and you just dont wahnt to install it on the host;
-  * Usefull when incompatible tools rejects to run on the same host;
-  * Usefull to get new and even edge versions of tools
+  * Useful if the tool is ugly and dirty
+    and you just don't want to install it on the host;
+  * Useful when incompatible tools rejects to run on the same host;
+  * Useful to get new and even edge versions of tools
     on industrial distributives.
 * Run tools using 'services' like dind
-  and use them seamless with dockerized tools;
+  and use them seamless with dockerised tools;
   * Same as above including build in modern dind while host's dockerd is 1.12+;
   * Per build service isolation.
-* Export docker images and docker volumes standart way.
+* Export docker images and docker volumes standard way.
   * After build finishes, the service will automatic export its artifacts.
 
 You can use CI/CD machine with only:
@@ -38,7 +43,7 @@ you can even use coreutils from busybox:latest inside your build script.
 You can check it works
 by just run example build. E.g.: Just run `./Jenkins_example-project`
 
-*No, you dont need Jenkins*, that's just the name of start script.
+*No, you don't need Jenkins*, that's just the name of start script.
 `./Jenkins_example-project` 'emulates' build server's work:
 - sets some environment;
 - changes working directory;
@@ -51,8 +56,7 @@ you will get example docker artifacts in `./workdir/docker-target/`.
 ### Slow start
 
 * EXAMPLE #1 build docker image from Dockerfile.
-You just can replace conthent between two horisontal lines
-in `./build-example-project.sh` with:
+Replace content between two horizontal lines in `./build-example-project.sh`:
 ```bash
 # -----------------------------------------------------------------------------
 
@@ -64,8 +68,7 @@ popd
 ```
 
 * EXAMPLE #2 build docker project with docker-compose.yaml.
-You just can replace conthent between two horisontal lines
-in `./build-example-project.sh` with:
+Replace content between two horizontal lines in `./build-example-project.sh`:
 ```bash
 # -----------------------------------------------------------------------------
 
@@ -83,7 +86,7 @@ popd
 - First you need a project with complete build script
   like: unzip -> change directory -> perform build steps;
 
-- Create or select 'wheels' (profiles) usefull for your build job
+- Create or select 'wheels' (profiles) useful for your build job
   and set it in `GEARWHEEL_WHEELS` variable;
 
   - `GEARWHEEL_WHEELS` variable may contain one or more
@@ -91,13 +94,13 @@ popd
     If there are duplicated tools inside them,
     first wheel (profile) will be used first;
 
-  - If you wahnt to create new wheel (profile),
+  - If you want to create new wheel (profile),
     use `./local/etc/gearwheel.d/multigear.sh`.
     It will create new wheel from the `DEFAULT` one.
 
 - Name your build job and set the name in `GEARWHEEL_TASKID` variable;
 
-  - You dont have to do it,
+  - You don't have to do it,
     `GEARWHEEL_TASKID` will be auto set to some ugly string if not set.
 
 - Using `./build-example-project.sh` add your build script in `build-*.sh`.
@@ -115,7 +118,7 @@ popd
     `wheelctl [ start | stop | restart | status ] serviceName`;
 
   - If you stop the service manually, then all its state will be lost.
-    Be sure you extract all the data before stio service;
+    Be sure you extract all the data before stop service;
 
   - All services stops automatically on script's exit.
     In such case the data will be extracted to certain directories
@@ -142,7 +145,7 @@ popd
     for executing `build-*.sh` from build server's pipeline;
 * You can use it other way.
 
-## Todo
+## To do
 
 * Add and test more tools;
 * Optimize code to run in Apline linux and jenkins:alpine;
