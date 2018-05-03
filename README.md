@@ -159,4 +159,5 @@ popd
   * Maybe slow parts rewrite;
 * Test in various sutuations;
 * Add service busybox;
-* Readme add FAQ.
+* Readme add FAQ;
+* Fix using without dind.
