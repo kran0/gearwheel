@@ -157,4 +157,6 @@ popd
   * VERBOSE_LEVELs;
   * More useful diagnostic messages;
   * Maybe slow parts rewrite;
-* Test in various sutuations.
+* Test in various sutuations;
+* Add service busybox;
+* Readme add FAQ.
